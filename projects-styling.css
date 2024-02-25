@@ -1,0 +1,41 @@
+@charset "utf-8";
+
+@font-face {
+    font-family: Montserrat;
+    src: url(Fonts/Montserrat/Montserrat-VariableFont_wght.ttf);
+}
+
+@font-face {
+    font-family: Montserrat-thin;
+    src: url(Fonts/Montserrat/static/Montserrat-Thin.ttf);
+}
+
+body {
+    background: rgb(24, 40, 40);
+    font-family: Montserrat;
+    display: flex;
+    flex-direction: column;
+}
+
+body div.backLink {
+    margin: 1vw;
+}
+
+body div.backLink a {
+    text-decoration: none;
+    background: none;
+    color: rgb(242, 115, 72);
+    font-size: 2vw;
+}
+
+body div.backLink a:hover {
+    color: white;
+}
+
+body footer {
+    font-family: Montserrat-thin;
+    color: white;
+    text-align: center;
+    font-size: 1vw;
+    font-weight: lighter;
+}
