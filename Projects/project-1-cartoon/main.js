@@ -20,3 +20,15 @@ context.lineTo(50, 300);
 context.lineTo(50, 50);
 context.strokeStyle = "black";
 context.stroke();
+
+drawHouse(context, 0.5);
+
+function drawHouse(context, offset) {
+    // Draw top half triangle.
+    context.moveTo(250 + offset, 10 + offset);
+    context.lineTo(10 + offset, 60 + offset);
+    context.lineTo(490 + offset, 60 + offset);
+    context.lineTo(250 + offset, 10 + offset);
+    context.strokeStyle = "green";
+    context.stroke();
+}
