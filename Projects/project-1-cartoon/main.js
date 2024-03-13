@@ -14,31 +14,24 @@ function drawMoon(context, x, y) {
 }
 
 function drawStars(context, numOfStars) {
-    context.beginPath();
-
-    let i 
-    for (let i = 0; i < context.width; i++) {
-        for (let j = 0; j < context.height / 4; j++) {
-            var x = Math.random() * context.width;
-            var y = Math.random() * context.height / 4;
-            context.fillRect(x, y, 1, 1);
-        }    
+    context.fillStyle = "#0000ff";
+    for (var i = 0; i < numOfStars; i++) {
+        var x = Math.floor(Math.random() * mainCanvas.width);
+        var y = Math.floor(Math.random() * mainCanvas.height / 2);
+        context.fillRect(x, y, 2, 2);
     }
-
-    // context.fillRect(100, 100, 1, 1);
-    // context.fillRect(200, 200, 1, 1);
-    context.fillStyle = "white";
-    context.fill();
 }
 
-function drawBuilding(context, x, y, length, width, buildingColor, windowColor) {
+function drawBuilding(context, x, y, height, width) {
+    context.beginPath();
     
+
 }
 // Functions end.
 
 
 drawMoon(context, 1350, 110);
-drawStars(context);
+drawStars(context, 1000);
 
 var gradient = context.createLinearGradient(0, 0, mainCanvas.width, 0);
 gradient.addColorStop("0", "white");

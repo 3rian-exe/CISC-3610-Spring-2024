@@ -19,8 +19,18 @@ function drawRandomStars(context, numOfStars) {
 }
 
 function drawBuilding(context, x, y, height, width) {
-  
+  context.fillStyle = "#808080";
+  context.fillRect(x, y, width, height);
+  context.fillStyle = "#ffffff";
+
+  // for (var i = y + 10; y < height - 10; i += 10) {
+  //   for (var j = x + 10; j < width - 10; j += 10) {
+  //     context.fillRect(i, y, width / 8, height / 4);
+  //   }
+  // }
+  context.fillRect(260, 20, width / 16, height / 8);
 }
 
 drawRandomStars(context, 2000);
+drawBuilding(context, 250, 10, 200, 150);
 
