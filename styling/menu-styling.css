@@ -32,7 +32,7 @@ body div.backLink a:hover {
     color: white;
 }
 
-body div.projectSelect {
+body div.menuSelect {
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -40,19 +40,19 @@ body div.projectSelect {
     border-radius: 15px; */
 }
 
-body div.projectSelect ul {
+body div.menuSelect ul {
     list-style-type: none;
     text-align: center;
 }
 
-body div.projectSelect ul li a {
+body div.menuSelect ul li a {
     text-decoration: none;
     background: none;
     color: rgb(242, 115, 72);
     font-size: 5vw;
 }
 
-body div.projectSelect ul li a:hover {
+body div.menuSelect ul li a:hover {
     color: white;
 }
 
