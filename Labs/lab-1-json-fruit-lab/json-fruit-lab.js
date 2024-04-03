@@ -17,9 +17,10 @@ var fruits = [
 
 var barHeight = mainCanvas.height / fruits.length;
 var y = 1;
+
 for (var i = 0; i < fruits.length; i++) {
     context.fillStyle = fruits[i]["color"];
-    context.fillRect(1, y, fruits[i]["quantity"] * 10, barHeight);
+    context.fillRect(1, y, fruits[i]["quantity"] * 25, barHeight);
     context.fillStyle = "black";
     context.font = "20px Verdana";
     context.fillText(fruits[i]["quantity"], 10, y + (barHeight / 2));
