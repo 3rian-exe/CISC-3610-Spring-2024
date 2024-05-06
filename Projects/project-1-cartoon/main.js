@@ -1,19 +1,17 @@
 "use strict";
 
-// Note canvas size is 1100x1100 pixels.
+// Note canvas size is 1200x1000 pixels.
+
+/* * * * * * * * * * * * * Todo * * * * * * * * * * * * * * * * * * *
+- Fix up canvas text. (add a sign that says "Welcome to Lake Side Camp Grounds")
+ * * * * * * * * * * * * * Done * * * * * * * * * * * * * * * * * * */
 
 const mainCanvas = document.getElementById("mainCanvas");
 const context = mainCanvas.getContext("2d");
 
 // Functions start.
-function drawWindow(canvas, x, y, radius) {
-    context.fillStyle = "white";
-    context.beginPath();
-    context.arc(x, y, radius, 0, 2 * Math.PI);
-    context.rect(mainCanvas.width, 0, -mainCanvas.width, mainCanvas.height);
-    context.fill();
-}
 
+// Draw the moon and a few planets at random positions in the sky.
 function drawMoon(context, x, y, radius) {
     context.beginPath();
     context.arc(x, y, radius, 0, 2 * Math.PI);
@@ -31,6 +29,7 @@ function drawMoon(context, x, y, radius) {
     }
 }
 
+// Randomly draws a specified number of stars.
 function drawStars(context, numOfStars) {
     context.fillStyle = "#0000ff";
     for (var i = 0; i < numOfStars; i++) {
@@ -40,25 +39,28 @@ function drawStars(context, numOfStars) {
     }
 }
 
+// Draw the ground.
 function drawGround(context) {
-    context.fillStyle = "black";
+    context.fillStyle = "#2b180c";
     context.fillRect(1, mainCanvas.height / 2, mainCanvas.width, mainCanvas.height / 4);
 }
 
+// Draw a cabin.
 function drawCabin(context, x, y, height, width) {
-  
+
     // Draw cabin body.
-    context.fillStyle = "#483131"
+    context.fillStyle = "#483131";
     context.fillRect(x, y, width, height);
 
     // Draw the logs that make up the cabin walls.
     var logHeight = 15;
+    context.lineWidth = 2;
     context.beginPath();
     for (var i = height + y; i >= y; i -= logHeight) {
         context.moveTo(x, i);
         context.lineTo(x + width, i);
     }
-    context.strokeStyle = "#FFFFFF";
+    context.strokeStyle = "#000000";
     context.stroke();
 
     // Draw a window.
@@ -67,8 +69,8 @@ function drawCabin(context, x, y, height, width) {
     
     // Draw the window frame.
     context.beginPath();
-    context.lineWidth = 4;
     context.strokeStyle = "#000000";
+    context.lineWidth = 2;
     context.strokeRect(x + width / 4, y + height / 4, width / 2, height / 2);
     context.lineWidth = 2;
     context.moveTo(x + width / 2, y + height / 4);
@@ -78,24 +80,88 @@ function drawCabin(context, x, y, height, width) {
     context.stroke();
 
     // Draw the roof.
-    
+    context.fillStyle = "#808080";
+    context.beginPath();
+    context.moveTo(x - (width * 0.1), y);
+    context.lineTo(x + (width + (width * 0.1)) / 2, y * 0.95);
+    context.lineTo(x + width + (width * 0.1), y);
+    context.closePath();
+    context.fill();
 
+    context.fillStyle = "#000000";
 }
 
-function drawCampFire() {}
+// Draw canvas window. 
+function drawWindow(context, x, y, radius) {
+    context.fillStyle = "white";
+    context.beginPath();
+    context.arc(x, y, radius, 0, 2 * Math.PI);
+    context.rect(mainCanvas.width, 0, -mainCanvas.width, mainCanvas.height);
+    context.fill();
+}
 
-function drawDistantForest() {}
+function drawDistantForest(context) {
 
-function drawLake() {}
+    var maxTreeHeight = 70;
+    var maxTreeWidth = 7;
+    for (var i = 1; i < mainCanvas.width; i += (Math.random() * 6)) {
+        // Draw the tree trunk.
+        var treeHeight = Math.floor(Math.random() * maxTreeHeight);
+        var treeWidth = Math.floor(Math.random() * maxTreeWidth); 
+        //var y = Math.floor(Math.random() * (mainCanvas.height / 2));
+        var y = mainCanvas.height / 2;
+        context.fillStyle = "#261105";
+        context.fillRect(i, y, treeWidth, -treeHeight);
+        
+        // Draw tree leaves.
+        context.fillStyle = "#005000"
+        y -= treeHeight * 0.66;
+        var treeLeavesWidth = 3 * treeWidth;
+        var x = (i + (treeWidth / 2)) - (treeLeavesWidth / 2);
+        context.beginPath();
+        context.moveTo(x, y);
+        context.lineTo(x + (treeLeavesWidth / 2), y - treeHeight * 0.40);
+        context.lineTo(x + treeLeavesWidth, y);
+
+        for (var leafCluster = 0; leafCluster < 3; leafCluster++) {
+            y -= treeHeight * 0.15;
+            context.moveTo(x, y);
+            context.lineTo(x + (treeLeavesWidth / 2), y - treeHeight * 0.40);
+            context.lineTo(x + treeLeavesWidth, y);
+        }
+        context.fill();
+    }
+}
+
+function drawPond(context) {
+    
+    context.beginPath();
+    context.moveTo(mainCanvas.width - 500, mainCanvas.height * 0.75);
+    context.quadraticCurveTo(300, 500, 800, 500);
+    context.lineTo(mainCanvas.width, 500);
+    context.lineTo(mainCanvas.width, mainCanvas.height * 0.75);
+    context.closePath();
+    // context.fillStyle = "#90C290";
+    context.fillStyle = "#54AC68";
+    context.fill();
+}
+
+function drawSign(context, x, y) {
+    // ucontext.fillRect(x, y, 60, 80);
+    
+}
 
 // Functions end.
 
 drawGround(context);
 drawStars(context, 1000);
 drawMoon(context,  700, 100, 80);
-drawCabin(context, 100, 370, 200, 100);
-drawCabin(context, 10, 400, 250, 150);
-// drawWindow(context, 550, 550, 500);
+drawDistantForest(context);
+drawCabin(context, 200, 370, 200, 100);
+drawCabin(context, 40, 400, 250, 150);
+//drawWindow(context, 550, 550, 500); // Could be an arch that has the welcome sign.
+drawPond(context);
+
 
 var gradient = context.createLinearGradient(0, 0, mainCanvas.width, 0);
 gradient.addColorStop("0", "red");
