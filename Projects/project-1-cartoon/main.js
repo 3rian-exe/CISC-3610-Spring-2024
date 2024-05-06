@@ -2,10 +2,6 @@
 
 // Note canvas size is 1200x1000 pixels.
 
-/* * * * * * * * * * * * * Todo * * * * * * * * * * * * * * * * * * *
-- Fix up canvas text. (add a sign that says "Welcome to Lake Side Camp Grounds")
- * * * * * * * * * * * * * Done * * * * * * * * * * * * * * * * * * */
-
 const mainCanvas = document.getElementById("mainCanvas");
 const context = mainCanvas.getContext("2d");
 
@@ -91,17 +87,9 @@ function drawCabin(context, x, y, height, width) {
     context.fillStyle = "#000000";
 }
 
-// Draw canvas window. 
-function drawWindow(context, x, y, radius) {
-    context.fillStyle = "white";
-    context.beginPath();
-    context.arc(x, y, radius, 0, 2 * Math.PI);
-    context.rect(mainCanvas.width, 0, -mainCanvas.width, mainCanvas.height);
-    context.fill();
-}
+
 
 function drawDistantForest(context) {
-
     var maxTreeHeight = 70;
     var maxTreeWidth = 7;
     for (var i = 1; i < mainCanvas.width; i += (Math.random() * 6)) {
@@ -122,7 +110,7 @@ function drawDistantForest(context) {
         context.moveTo(x, y);
         context.lineTo(x + (treeLeavesWidth / 2), y - treeHeight * 0.40);
         context.lineTo(x + treeLeavesWidth, y);
-
+    
         for (var leafCluster = 0; leafCluster < 3; leafCluster++) {
             y -= treeHeight * 0.15;
             context.moveTo(x, y);
@@ -134,23 +122,36 @@ function drawDistantForest(context) {
 }
 
 function drawPond(context) {
-    
     context.beginPath();
     context.moveTo(mainCanvas.width - 500, mainCanvas.height * 0.75);
     context.quadraticCurveTo(300, 500, 800, 500);
     context.lineTo(mainCanvas.width, 500);
     context.lineTo(mainCanvas.width, mainCanvas.height * 0.75);
     context.closePath();
-    // context.fillStyle = "#90C290";
-    context.fillStyle = "#54AC68";
+    context.fillStyle = "#008C96";
     context.fill();
 }
 
 function drawSign(context, x, y) {
-    // ucontext.fillRect(x, y, 60, 80);
-    
-}
+    var signWidth = 120;
+    var signHeight = 80;
 
+    // Draw the stick supporting the sign.
+    context.fillStyle = "black";
+    context.fillRect(x + (signWidth / 2) - 4, y - 10, 8, 160);
+    // Draw the sign board.
+    context.fillStyle = "brown";
+    context.fillRect(x, y, signWidth, signHeight);
+    // Draw the text on the sign;
+    context.fillStyle = "black";
+    context.font = "15px Verdana";
+    context.fillText("Welcome to", x + 5, y + signHeight / 2 - 15)
+    context.fillText("Lake Side", x + 5, y + 15 + signHeight / 2 - 15)
+    context.fillText("Camp Grounds", x + 5, y + 30 + signHeight / 2 - 15)
+    // Draw nails.
+    context.fillRect(x + (signWidth / 2) - 2, y + (signHeight * 0.12), 2, 2);
+    context.fillRect(x + (signWidth / 2) - 2, y + (signHeight * 0.88), 2, 2);
+}
 // Functions end.
 
 drawGround(context);
@@ -159,13 +160,11 @@ drawMoon(context,  700, 100, 80);
 drawDistantForest(context);
 drawCabin(context, 200, 370, 200, 100);
 drawCabin(context, 40, 400, 250, 150);
-//drawWindow(context, 550, 550, 500); // Could be an arch that has the welcome sign.
 drawPond(context);
+drawSign(context, 150, 600);
 
 
 var gradient = context.createLinearGradient(0, 0, mainCanvas.width, 0);
 gradient.addColorStop("0", "red");
 gradient.addColorStop("0.5", "white");
 context.fillStyle = gradient;
-context.font = "30px Verdana";
-context.fillText("Camp Site", 20, 40);

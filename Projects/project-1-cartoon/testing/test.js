@@ -67,6 +67,15 @@ function drawCabin(context, x, y, height, width) {
     context.fillStyle = "#000000";
 }
 
+// Draw canvas window. 
+function drawWindow(context, x, y, radius) {
+  context.fillStyle = "white";
+  context.beginPath();
+  context.arc(x, y, radius, 0, 2 * Math.PI);
+  context.rect(mainCanvas.width, 0, -mainCanvas.width, mainCanvas.height);
+  context.fill();
+}
+
 drawRandomStars(context, 2000);
 drawCabin(context, 250, 100, 200, 150);
 
