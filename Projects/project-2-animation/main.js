@@ -11,32 +11,66 @@
 const mainCanvas = document.getElementById("mainCanvas");
 const context = mainCanvas.getContext("2d");
 
+// Get all the random x, and y coordinates for the trees, stars, and planets.
+const treeCoordinates = [];
+const treeSizes = [[]];
+const maxTreeHeight = 70;
+const maxTreeWidth = 7;
+for (var i = 1; i < mainCanvas.width; i += Math.floor((Math.random() * 6)))  {
+    treeCoordinates.push(i);
+    var treeWidth = Math.floor(Math.random() * maxTreeWidth);
+    var treeHeight = Math.floor(Math.random() * maxTreeHeight);
+    treeSizes.push([treeWidth, treeHeight]);
+}
+
+const numOfStars = 2000;
+const starCoordinates = [[]];
+for (var star = 1; star <= numOfStars; star++) {
+    var x = Math.floor(Math.random() * mainCanvas.width);
+    var y = Math.floor(Math.random() * mainCanvas.height / 2);
+    starCoordinates.push([x, y]);
+}
+
+const numOfPlanets = 5;
+const planetCoordinates = [[]];
+const planetRadii = []
+for (var planet = 1; planet <= numOfPlanets; planet++) {
+    var x = Math.floor(Math.random() * mainCanvas.width);
+    var y = Math.floor(Math.random() * mainCanvas.height / 2);
+    planetCoordinates.push([x, y]);
+
+    var r = Math.floor(Math.random() * 10);
+    planetRadii.push(r);
+}
+
+
 // Functions start.
 
 // Draw the moon and a few planets at random positions in the sky.
 function drawMoon(context, x, y, radius) {
-    context.beginPath();
-    context.arc(x, y, radius, 0, 2 * Math.PI);
-    context.fillStyle = "gray";
-    context.fill();
 
-    for (var i = 0; i < 5; i++) {
-        var x2 = Math.floor(Math.random() * (x));
-        var y2 = Math.floor(Math.random() * (y + 400));
-        var r = Math.floor(Math.random() * 10);
+    for (var i = 0; i < numOfPlanets; i++) {
+        var x2 = planetCoordinates[i][0];
+        var y2 = planetCoordinates[i][1];
+        var r = planetRadii[i];
         context.beginPath();
         context.arc(x2, y2, r, 0, 2 * Math.PI);
         context.fillStyle = "White";
         context.fill();
     }
+
+    context.beginPath();
+    context.arc(x, y, radius, 0, 2 * Math.PI);
+    context.fillStyle = "gray";
+    context.fill();
 }
 
 // Randomly draws a specified number of stars.
-function drawStars(context, numOfStars) {
+function drawStars(context) {
     context.fillStyle = "#0000ff";
-    for (var i = 0; i < numOfStars; i++) {
-        var x = Math.floor(Math.random() * mainCanvas.width);
-        var y = Math.floor(Math.random() * mainCanvas.height / 2);
+    for (var i = 0; i < starCoordinates.length; i++) {
+        var x = starCoordinates[i][0];
+        var y = starCoordinates[i][1];
         context.fillRect(x, y, 2, 2);
     }
 }
@@ -96,22 +130,21 @@ function drawCabin(context, x, y, height, width) {
 
 
 function drawDistantForest(context) {
-    var maxTreeHeight = 70;
-    var maxTreeWidth = 7;
-    for (var i = 1; i < mainCanvas.width; i += (Math.random() * 6)) {
+
+    for (var i = 0; i < treeCoordinates.length; i++) {
         // Draw the tree trunk.
-        var treeHeight = Math.floor(Math.random() * maxTreeHeight);
-        var treeWidth = Math.floor(Math.random() * maxTreeWidth); 
-        //var y = Math.floor(Math.random() * (mainCanvas.height / 2));
-        var y = mainCanvas.height / 2;
+        var treeWidth = treeSizes[i][0]; 
+        var treeHeight = treeSizes[i][1];
         context.fillStyle = "#261105";
-        context.fillRect(i, y, treeWidth, -treeHeight);
+        var y = mainCanvas.height / 2;
+        var x = treeCoordinates[i]
+        context.fillRect(x, y, treeWidth, -treeHeight);
         
         // Draw tree leaves.
         context.fillStyle = "#005000"
         y -= treeHeight * 0.66;
         var treeLeavesWidth = 3 * treeWidth;
-        var x = (i + (treeWidth / 2)) - (treeLeavesWidth / 2);
+        x = (x + (treeWidth / 2)) - (treeLeavesWidth / 2);
         context.beginPath();
         context.moveTo(x, y);
         context.lineTo(x + (treeLeavesWidth / 2), y - treeHeight * 0.40);
@@ -181,19 +214,23 @@ function drawSign(context, x, y) {
     context.fillRect(x + (signWidth / 2) - 2, y + (signHeight * 0.12), 2, 2);
     context.fillRect(x + (signWidth / 2) - 2, y + (signHeight * 0.88), 2, 2);
 }
+
+function drawStaticElements(context) {
+    drawGround(context);
+    drawStars(context, 1000);
+    drawMoon(context,  700, 100, 80);
+    drawDistantForest(context);
+    drawPond(context);
+    drawTree(context, 350, 550, 180, 15);
+    drawTree(context, 460, 540, 130, 20);
+    drawCabin(context, 200, 370, 200, 130);
+    drawCabin(context, 20, 364, 270, 170);
+    drawSign(context, 150, 600);
+    var gradient = context.createLinearGradient(0, 0, mainCanvas.width, 0);
+    gradient.addColorStop("0", "red");
+    gradient.addColorStop("0.5", "white");
+    context.fillStyle = gradient;
+}
 // Functions end.
 
-drawGround(context);
-drawStars(context, 1000);
-drawMoon(context,  700, 100, 80);
-drawDistantForest(context);
-drawPond(context);
-drawTree(context, 350, 550, 180, 15);
-drawTree(context, 460, 540, 130, 20);
-drawCabin(context, 200, 370, 200, 130);
-drawCabin(context, 20, 364, 270, 170);
-drawSign(context, 150, 600);
-var gradient = context.createLinearGradient(0, 0, mainCanvas.width, 0);
-gradient.addColorStop("0", "red");
-gradient.addColorStop("0.5", "white");
-context.fillStyle = gradient;
+drawStaticElements(context);
