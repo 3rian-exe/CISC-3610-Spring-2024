@@ -233,4 +233,52 @@ function drawStaticElements(context) {
 }
 // Functions end.
 
-drawStaticElements(context);
+// Animation
+let img = new Image();
+img.src = 'Sprites/CampFireFinished.png';
+img.onload = function() {
+  init();
+};
+
+const scale = 1.5;
+const spriteWidth = 64;
+const spriteHeight = 64;
+const scaledSpriteW = spriteWidth * scale;
+const scaledSpriteH = spriteHeight * scale;
+
+function drawFrame(context, frameX, frameY, canvasX, canvasY) {
+    context.drawImage(img, 
+                        frameX * spriteWidth, frameY * spriteHeight, spriteWidth, spriteHeight, 
+                        canvasX, canvasY, scaledSpriteW, scaledSpriteH);
+}
+
+function init() {
+  window.requestAnimationFrame(step);
+}
+
+
+window.requestAnimationFrame(step);
+
+const cycleLoop = [0, 1, 0, 2];
+let currentLoopIndex = 0;
+let frameCount = 0;
+
+function step() {
+  
+  frameCount++;
+  if (frameCount < 15) {
+    window.requestAnimationFrame(step);
+    return;
+  }
+  frameCount = 0;
+  context.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+  drawStaticElements(context);
+  drawFrame(context, cycleLoop[currentLoopIndex], 0, 250, 530);
+  drawFrame(context, cycleLoop[currentLoopIndex], 0, 400, 500);
+  currentLoopIndex++;
+  if (currentLoopIndex >= cycleLoop.length) {
+    currentLoopIndex = 0;
+  }
+  // drawStaticElements(context);
+  window.requestAnimationFrame(step);
+}
