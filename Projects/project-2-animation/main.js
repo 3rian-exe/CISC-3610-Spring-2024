@@ -2,12 +2,6 @@
 
 // Note canvas size is 1200x1000 pixels.
 
-/*
-    Idea: 
-        - campfire sprites in front of the two cabins.
-        - some flying owl sprites
-*/
-
 const mainCanvas = document.getElementById("mainCanvas");
 const context = mainCanvas.getContext("2d");
 
@@ -44,10 +38,10 @@ for (var planet = 1; planet <= numOfPlanets; planet++) {
 }
 
 
-// Functions start.
+// Static element functions start.
 
 // Draw the moon and a few planets at random positions in the sky.
-function drawMoon(context, x, y, radius) {
+function drawMoon(x, y, radius) {
 
     for (var i = 0; i < numOfPlanets; i++) {
         var x2 = planetCoordinates[i][0];
@@ -66,7 +60,7 @@ function drawMoon(context, x, y, radius) {
 }
 
 // Randomly draws a specified number of stars.
-function drawStars(context) {
+function drawStars() {
     context.fillStyle = "#0000ff";
     for (var i = 0; i < starCoordinates.length; i++) {
         var x = starCoordinates[i][0];
@@ -76,13 +70,13 @@ function drawStars(context) {
 }
 
 // Draw the ground.
-function drawGround(context) {
+function drawGround() {
     context.fillStyle = "#2b180c";
     context.fillRect(1, mainCanvas.height / 2, mainCanvas.width, mainCanvas.height / 4);
 }
 
 // Draw a cabin.
-function drawCabin(context, x, y, height, width) {
+function drawCabin(x, y, height, width) {
 
     // Draw cabin body.
     context.fillStyle = "#483131";
@@ -129,7 +123,7 @@ function drawCabin(context, x, y, height, width) {
 
 
 
-function drawDistantForest(context) {
+function drawDistantForest() {
 
     for (var i = 0; i < treeCoordinates.length; i++) {
         // Draw the tree trunk.
@@ -160,7 +154,7 @@ function drawDistantForest(context) {
     }
 }
 
-function drawTree(context, x, y, treeHeight, treeWidth) {
+function drawTree(x, y, treeHeight, treeWidth) {
     context.fillStyle = "#261105";
     context.fillRect(x, y, treeWidth, -treeHeight);
 
@@ -183,7 +177,7 @@ function drawTree(context, x, y, treeHeight, treeWidth) {
     context.fill();
 }
 
-function drawPond(context) {
+function drawPond() {
     context.beginPath();
     context.moveTo(mainCanvas.width - 500, mainCanvas.height * 0.75);
     context.quadraticCurveTo(300, 500, 800, 500);
@@ -194,7 +188,7 @@ function drawPond(context) {
     context.fill();
 }
 
-function drawSign(context, x, y) {
+function drawSign(x, y) {
     var signWidth = 120;
     var signHeight = 80;
 
@@ -215,70 +209,170 @@ function drawSign(context, x, y) {
     context.fillRect(x + (signWidth / 2) - 2, y + (signHeight * 0.88), 2, 2);
 }
 
-function drawStaticElements(context) {
-    drawGround(context);
-    drawStars(context, 1000);
-    drawMoon(context,  700, 100, 80);
-    drawDistantForest(context);
-    drawPond(context);
-    drawTree(context, 350, 550, 180, 15);
-    drawTree(context, 460, 540, 130, 20);
-    drawCabin(context, 200, 370, 200, 130);
-    drawCabin(context, 20, 364, 270, 170);
-    drawSign(context, 150, 600);
+function drawStaticElements() {
+    drawGround();
+    drawStars(1000);
+    drawMoon(700, 100, 80);
+    drawDistantForest();
+    drawPond();
+    drawTree(350, 550, 180, 15);
+    drawTree(460, 540, 130, 20);
+    drawCabin(200, 370, 200, 130);
+    drawCabin(20, 364, 270, 170);
+    drawSign(150, 600);
     var gradient = context.createLinearGradient(0, 0, mainCanvas.width, 0);
-    gradient.addColorStop("0", "red");
-    gradient.addColorStop("0.5", "white");
     context.fillStyle = gradient;
 }
-// Functions end.
+// Static element functions end.
 
-// Animation
-let img = new Image();
-img.src = 'Sprites/CampFireFinished.png';
-img.onload = function() {
-  init();
-};
-
-const scale = 1.5;
-const spriteWidth = 64;
-const spriteHeight = 64;
-const scaledSpriteW = spriteWidth * scale;
-const scaledSpriteH = spriteHeight * scale;
-
-function drawFrame(context, frameX, frameY, canvasX, canvasY) {
-    context.drawImage(img, 
-                        frameX * spriteWidth, frameY * spriteHeight, spriteWidth, spriteHeight, 
-                        canvasX, canvasY, scaledSpriteW, scaledSpriteH);
+// Animation functions
+function drawAFrame(spriteSheet, frameX, frameY, spriteW, spriteH, scale, canvasX, canvasY) {
+    context.drawImage(spriteSheet, frameX * spriteW, frameY * spriteH, spriteW, spriteH, 
+                        canvasX, canvasY, spriteW * scale, spriteH * scale);
 }
 
 function init() {
-  window.requestAnimationFrame(step);
+    window.requestAnimationFrame(step);
 }
 
+function step() {
+    
+    frameCount++;
+    if (frameCount < 15) {
+        window.requestAnimationFrame(step);
+        return;
+    }
+    frameCount = 0;
+    context.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+    drawStaticElements();
 
-window.requestAnimationFrame(step);
+    // Campfire animation.
+    drawAFrame(campfireImg, campfireSpriteLoc[campfireSpriteLocIndex], 0, campfireWidth, campfireHeight, campfireScale, 250, 530);
+    drawAFrame(campfireImg, campfireSpriteLoc[campfireSpriteLocIndex], 0, campfireWidth, campfireHeight, campfireScale, 400, 500);
+    campfireSpriteLocIndex++;
+    if (campfireSpriteLocIndex >= campfireSpriteLoc.length) {
+        campfireSpriteLocIndex = 0;
+    }
 
-const cycleLoop = [0, 1, 0, 2];
-let currentLoopIndex = 0;
+    // White Owl animation.
+    drawAFrame(whiteOwlImg, whiteOwlSpriteLoc[whiteOwlSpriteLocIndex], 0, whiteOwlWidth, whiteOwlHeight, whiteOwlScale, whiteOwlXPos, whiteOwlYPos);
+
+    whiteOwlSpriteLocIndex++;
+    
+    if (whiteOwlGoingRight === true) {
+
+        if (whiteOwlSpriteLocIndex >= whiteOwlSpriteLoc.length) {
+        whiteOwlSpriteLocIndex = 3;
+        }
+
+        whiteOwlXPos += 1 * whiteOwlSpeed;
+    }
+    else {
+
+        if (whiteOwlSpriteLocIndex >= whiteOwlSpriteLoc.length - 3) {
+        whiteOwlSpriteLocIndex = 0;
+        }
+
+        whiteOwlXPos -= 1 * whiteOwlSpeed;
+    }
+    
+    if (whiteOwlXPos >= mainCanvas.width + whiteOwlWidth) {
+        whiteOwlGoingRight = false;
+        whiteOwlYPos = Math.floor(Math.random() * mainCanvas.height / 3);
+        whiteOwlSpeed = Math.floor(Math.random() * 50);
+        whiteOwlScale = Math.random() * 2;
+    }
+
+    if (whiteOwlXPos <= -whiteOwlWidth) {
+        whiteOwlGoingRight = true;
+        whiteOwlYPos = Math.floor(Math.random() * mainCanvas.height / 3);
+        whiteOwlSpeed = Math.floor(Math.random() * 50);
+        whiteOwlScale = Math.random() * 2;
+    }
+
+    // Grey Owl animation.
+    drawAFrame(greyOwlImg, greyOwlSpriteLoc[greyOwlSpriteLocIndex], 0, greyOwlWidth, greyOwlHeight, greyOwlScale, greyOwlXPos, greyOwlYPos);
+
+    greyOwlSpriteLocIndex++;
+    
+    if (greyOwlGoingRight === true) {
+
+        if (greyOwlSpriteLocIndex >= greyOwlSpriteLoc.length) {
+        greyOwlSpriteLocIndex = 3;
+        }
+
+        greyOwlXPos += 1 * greyOwlSpeed;
+    }
+    else {
+
+        if (greyOwlSpriteLocIndex >= greyOwlSpriteLoc.length - 3) {
+        greyOwlSpriteLocIndex = 0;
+        }
+
+        greyOwlXPos -= 1 * greyOwlSpeed;
+    }
+    
+    if (greyOwlXPos >= mainCanvas.width + greyOwlWidth) {
+        greyOwlGoingRight = false;
+        greyOwlYPos = Math.floor(Math.random() * mainCanvas.height / 3);
+        greyOwlSpeed = Math.floor(Math.random() * 50);
+        greyOwlScale = Math.random() * 2;
+    }
+
+    if (greyOwlXPos <= -greyOwlWidth) {
+        greyOwlGoingRight = true;
+        greyOwlYPos = Math.floor(Math.random() * mainCanvas.height / 3);
+        greyOwlSpeed = Math.floor(Math.random() * 50);
+        greyOwlScale = Math.random() * 2;
+    }
+
+
+    window.requestAnimationFrame(step);
+}
+
+// Campfire animation.
+const campfireScale = 1.5;
+const campfireWidth = 64;
+const campfireHeight = 64;
+const campfireSpriteLoc = [0, 1, 2, 3, 4];
+let campfireSpriteLocIndex = 0;
+
 let frameCount = 0;
 
-function step() {
-  
-  frameCount++;
-  if (frameCount < 15) {
-    window.requestAnimationFrame(step);
-    return;
-  }
-  frameCount = 0;
-  context.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
-  drawStaticElements(context);
-  drawFrame(context, cycleLoop[currentLoopIndex], 0, 250, 530);
-  drawFrame(context, cycleLoop[currentLoopIndex], 0, 400, 500);
-  currentLoopIndex++;
-  if (currentLoopIndex >= cycleLoop.length) {
-    currentLoopIndex = 0;
-  }
-  // drawStaticElements(context);
-  window.requestAnimationFrame(step);
+let campfireImg = new Image();
+campfireImg.src = 'Sprites/CampFireFinished.png';
+
+
+// White Owl animation.
+let whiteOwlScale = Math.random() * 2;
+const whiteOwlWidth = 64;
+const whiteOwlHeight = 64;
+
+const whiteOwlSpriteLoc = [0, 1, 2, 6, 7, 8];
+let whiteOwlSpriteLocIndex = 0;
+let whiteOwlXPos = 0;
+let whiteOwlYPos = Math.floor(Math.random() * mainCanvas.height / 3);
+let whiteOwlGoingRight = true;
+let whiteOwlSpeed = Math.floor(Math.random() * 50);
+
+let whiteOwlImg = new Image();
+whiteOwlImg.src = 'Sprites/whiteOwl.png';
+
+
+// Grey Owl animation.
+let greyOwlScale = Math.random() * 2;
+const greyOwlWidth = 64;
+const greyOwlHeight = 64;
+
+const greyOwlSpriteLoc = [0, 1, 2, 6, 7, 8];
+let greyOwlSpriteLocIndex = 0;
+let greyOwlXPos = 0;
+let greyOwlYPos = Math.floor(Math.random() * mainCanvas.height / 3);
+let greyOwlGoingRight = true;
+let greyOwlSpeed = Math.floor(Math.random() * 50);
+
+let greyOwlImg = new Image();
+greyOwlImg.src = 'Sprites/greyOwl.png';
+greyOwlImg.onload = function() {
+    init();
 }
