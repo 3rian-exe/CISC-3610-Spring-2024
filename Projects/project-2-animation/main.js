@@ -238,7 +238,7 @@ function init() {
 function step() {
     
     frameCount++;
-    if (frameCount < 15) {
+    if (frameCount < 5) {
         window.requestAnimationFrame(step);
         return;
     }
