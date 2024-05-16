@@ -21,7 +21,6 @@ function calculateSunset(year, month, day, lat, lng, localOffset, daylightSaving
     else {
         var t = N + ((18 - lngHour) / 24)   // Setting time
     }
-    
 
     //3. calculate the Sun's mean anomaly   
     var M = (0.9856 * t) - 3.289;
@@ -68,8 +67,16 @@ function calculateSunset(year, month, day, lat, lng, localOffset, daylightSaving
 
     //10. convert UT value to local time zone of latitude/longitude
     return UT + localOffset + daylightSavings;
-
 }
-console.log(calculateSunset(2024, 5, 15, 40.69894, 73.97128, -5, 1, true));
 
-// console.log(5.4 % 1.4);
+function printSunrise() {
+    // latitude =  40.712742
+    // longitude = -74.013382
+    var localT=(24 + calculateSunset(2024, 5, 16, 40.712742, -74.013382, -5, 1, false)) % (24.0); //in printSunrise function
+    var hours;
+    var minutes = (localT % hours) * 60;
+    // printf("%.0f:%.0f\n",hours,minutes);
+    console.log(hours + ":" + minutes)
+}
+
+console.log(printSunrise());
