@@ -3,10 +3,7 @@
 function calculateSunset(year, month, day, lat, lng, localOffset, daylightSavings, sunRise) {
 
     const ZENITH = -0.83
-    /*
-    localOffset will be <0 for western hemisphere and >0 for eastern hemisphere
-    daylightSavings should be 1 if it is in effect during the summer otherwise it should be 0
-    */
+
     //1. first calculate the day of the year
     var N1 = Math.floor(275 * month / 9);
     var N2 = Math.floor((month + 9) / 12);
@@ -15,12 +12,7 @@ function calculateSunset(year, month, day, lat, lng, localOffset, daylightSaving
 
     //2. convert the longitude to hour value and calculate an approximate time
     var lngHour = lng / 15.0;
-    if (sunRise === true) {
-        var t = N + ((6 - lngHour) / 24);   // Rising time is desired:
-    }     
-    else {
-        var t = N + ((18 - lngHour) / 24)   // Setting time
-    }
+    var t = N + ((6 - lngHour) / 24);
 
     //3. calculate the Sun's mean anomaly   
     var M = (0.9856 * t) - 3.289;
@@ -45,18 +37,17 @@ function calculateSunset(year, month, day, lat, lng, localOffset, daylightSaving
 
     //7a. calculate the Sun's local hour angle
     var cosH = (Math.sin((Math.PI / 180) * ZENITH) - (sinDec * Math.sin((Math.PI / 180) * lat))) / (cosDec * Math.cos((Math.PI / 180) * lat));
-    /*   
-    if (cosH >  1) 
-    the sun never rises on this location (on the specified date)
-    if (cosH < -1)
-    the sun never sets on this location (on the specified date)
-    */
 
     //7b. finish calculating H and convert into hours
-    // If rising time is desired.
-    // var H = 360 - (180/PI)*acos(cosH);
-    // if setting time is desired.
-    var H = (180 / Math.PI) * Math.acos(cosH);
+    // Rising time.
+    if (sunRise === true) {
+        var H = 360 - (180 / Math.PI) * Math.acos(cosH);
+    }
+    // Setting time.
+    else {
+        var H = (180 / Math.PI) * Math.acos(cosH);
+    }
+
     H = H / 15;
 
     //8. calculate local mean time of rising/setting      
@@ -72,11 +63,10 @@ function calculateSunset(year, month, day, lat, lng, localOffset, daylightSaving
 function printSunrise() {
     // latitude =  40.712742
     // longitude = -74.013382
-    var localT=(24 + calculateSunset(2024, 5, 16, 40.712742, -74.013382, -5, 1, false)) % (24.0); //in printSunrise function
-    var hours;
-    var minutes = (localT % hours) * 60;
-    // printf("%.0f:%.0f\n",hours,minutes);
-    console.log(hours + ":" + minutes)
+    var localT = (24 + calculateSunset(2024, 5, 18, 40.712742, -74.013382, -5, 1, true)) % (24.0);
+    var hours = Math.floor(localT)
+    var minutes = (localT % 1) * 60;
+    console.log(hours + ":" + Math.round(minutes));
 }
 
-console.log(printSunrise());
+printSunrise();
