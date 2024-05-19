@@ -1,0 +1,22 @@
+{
+	"name":"Sunset - Sunrise Calculator PWA",
+	"short_name":"Sunset Calc PWA",
+	"start_url":"form.html",
+	"display":"standalone",
+	"background_color":"white",
+	"theme_color":"#2ab9dd",
+	"scope": ".",
+	"description":"This is a PWA tutorial.",
+	"icons":[
+	{
+	"src":"images/sunset-icon-612x612.jpg",					 
+	"sizes":"612x612",
+	"type":"image/jpg"
+	},
+	{
+	"src":"images/sunrise-512x512.png",
+	"sizes":"512x512",
+	"type":"image/png"
+	}
+]
+}

@@ -9,7 +9,7 @@ body, html {
 }
 
 .bg-img {
-    background-image: url("bg-images/earth-from-space-day.jpg");
+    background-image: url("images/earth-from-space-day.jpg");
     min-height: 720px;
     background-position: center;
     background-repeat: no-repeat;
