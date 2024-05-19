@@ -1,6 +1,6 @@
 "use strict";
 
-function calculateSunset(year, month, day, lat, lng, localOffset, daylightSavings, sunRise) {
+function calculateSunrise(year, month, day, lat, lng, localOffset, daylightSavings, sunrise) {
 
     const ZENITH = -0.83
 
@@ -40,7 +40,7 @@ function calculateSunset(year, month, day, lat, lng, localOffset, daylightSaving
 
     //7b. finish calculating H and convert into hours
     // Rising time.
-    if (sunRise === true) {
+    if (sunrise === true) {
         var H = 360 - (180 / Math.PI) * Math.acos(cosH);
     }
     // Setting time.
@@ -57,16 +57,127 @@ function calculateSunset(year, month, day, lat, lng, localOffset, daylightSaving
     var UT = (T - lngHour) % (24.0);
 
     //10. convert UT value to local time zone of latitude/longitude
-    return UT + localOffset + daylightSavings;
-}
+    var localT = (24 + (UT + localOffset + daylightSavings)) % (24.0);
 
-function printSunrise() {
-    // latitude =  40.712742
-    // longitude = -74.013382
-    var localT = (24 + calculateSunset(2024, 5, 18, 40.712742, -74.013382, -5, 1, true)) % (24.0);
     var hours = Math.floor(localT)
-    var minutes = (localT % 1) * 60;
-    console.log(hours + ":" + Math.round(minutes));
+    var minutes = Math.round((localT % 1) * 60);
+    
+    if (hours < 10) {
+        var hourRes = "0" + hours.toString();
+    }
+    else {
+        var hourRes = hours.toString();
+    }
+
+    if (minutes < 10) {
+        var minRes = "0" + minutes.toString();
+    }
+    else {
+        var minRes = minutes.toString();
+    }
+
+    return hourRes + ":" + minRes;
 }
 
-printSunrise();
+function calc() {
+    var dateInput = document.getElementById("date").value;
+    var date = new Date(dateInput);
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    if (document.getElementById('sunset').checked) {
+        var sunrise = false;
+    }
+    else {
+        var sunrise = true;
+    }
+
+    if (document.getElementById("dst").checked) {
+        var dst = 1;
+    }
+    else {
+        var dst = 0;
+    }
+
+    var utcOffset = parseInt(document.getElementById("utcOffset").value);
+    var lat = parseFloat(document.getElementById("lat").value);
+    var lon = parseFloat(document.getElementById("lon").value);
+    var result = calculateSunrise(year, month, day, lat, lon, utcOffset, dst, sunrise);
+
+    //alert(result);
+    document.getElementById("result").value = result;
+}
+
+document.addEventListener("DOMContentLoaded", (Event) => {
+    const saveFormData = () => {
+        var dateInput = document.getElementById("date").value;
+        var date = new Date(dateInput);
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+
+        if (document.getElementById('sunset').checked) {
+            var sunrise = false;
+        }
+        else {
+            var sunrise = true;
+        }
+
+        if (document.getElementById("dst").checked) {
+            var dst = 1;
+        }
+        else {
+            var dst = 0;
+        }
+
+        var utcOffset = parseInt(document.getElementById("utcOffset").value);
+        var lat = parseFloat(document.getElementById("lat").value);
+        var lon = parseFloat(document.getElementById("lon").value);
+        var result = calculateSunrise(year, month, day, lat, lon, utcOffset, dst, sunrise);
+        var dateString = date.toISOString().substring(0,10);
+        localStorage.setItem("formData", JSON.stringify({dateString, sunrise, dst, utcOffset, lat, lon, result}));
+    };
+
+    const loadFormData = () => {
+        const savedData = localStorage.getItem('formData');
+        if (savedData) {
+            const {dateString, sunrise, dst, utcOffset, lat, lon, result} = JSON.parse(savedData);
+
+            document.getElementById("date").value = dateString;
+            if (sunrise) {
+                document.getElementById("sunrise").checked = true;
+            }
+            else {
+                document.getElementById("sunset").checked = true;    
+            }
+            
+            if (dst === 1) {
+                document.getElementById("dst").checked = true;
+            }
+            else {
+                document.getElementById("dst").checked = false;
+            }
+            
+            document.getElementById('utcOffset').value = utcOffset || '';
+            document.getElementById("lat").value = lat || '';
+            document.getElementById("lon").value = lon || '';
+            document.getElementById("result").value = result || '';
+        }
+    };
+
+    loadFormData();
+
+    document.getElementById('date').addEventListener('input', saveFormData);
+    document.getElementById('sunset').addEventListener('input', saveFormData);
+    document.getElementById('sunrise').addEventListener('input', saveFormData);
+    document.getElementById('dst').addEventListener('input', saveFormData);
+    document.getElementById('utcOffset').addEventListener('input', saveFormData);
+    document.getElementById('lat').addEventListener('input', saveFormData);
+    document.getElementById('lon').addEventListener('input', saveFormData);
+    document.getElementById('result').addEventListener('input', saveFormData);
+
+    document.getElementById('rst').addEventListener('click', () => {
+        localStorage.removeItem('formData');
+    });
+})

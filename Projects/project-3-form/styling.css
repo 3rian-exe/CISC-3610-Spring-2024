@@ -1,1 +1,77 @@
 @charset "utf-8";
+
+body, html {
+    height: 100%;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.bg-img {
+    background-image: url("bg-images/earth-from-space-day.jpg");
+    min-height: 720px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.sunsetRiseCalc {
+    position: absolute;
+    right: 0;
+    margin: 20px;
+    max-width: 450px;
+    padding: 16px;
+    background-color: cadetblue;
+}
+
+input[type=text] {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+    background: #2ab9dd;
+}
+
+input[type=text]:focus {
+    background-color: #ddd;
+    outline: none;
+}
+
+#estimate {
+    background-color: aliceblue;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+#rst {
+    background-color: #0491aa;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+}
+  
+.rst:hover {
+    opacity: 1;
+    background-color: white;
+    color:  #0491aa;
+}
+
+body div.backLink a {
+    text-decoration: none;
+    background: none;
+    font-size: 1vw;
+}
+
+body footer {
+    text-decoration: none;
+    text-align: center;
+    font-size: 1vw;
+    font-weight: lighter;
+}

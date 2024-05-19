@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Form: Sunset Calculator</title>
+    <title>Form: Sunset - Sunrise Calculator</title>
     <meta charset="UTF-8">
     <link href="styling.css" rel="stylesheet"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,11 +14,48 @@
         <a href="../project-select.html">Back</a>
     </div>
 
+    <div class="bg-img">
 
-  </body>
-  <footer>
-    <div class="portfolioHomeButton">
-        <h3><a href="../../../portfolio.github.io/index.html">Portfolio Home</a></h3>
+        <form class="sunsetRiseCalc">
+            <h1>Calculate Sunrise - Sunset</h1>
+
+            <label for="date">Date</label>
+            <input type="date" id="date" required>
+            <br>
+            <label for="sunset">Sunset</label>
+            <input type="radio" id="sunset" name="sunset-sunrise" checked>
+            
+            <label for="sunrise">Sunrise</label>
+            <input type="radio" id="sunrise" name="sunset-sunrise">
+            <br>
+            <label for="dst">Daylight Savings (+1 hour)</label>
+            <input type="checkbox" id="dst">
+            <br>
+            <br>
+            <label for="utcOffset">UTC Offset</label>
+            <input type="text" id="utcOffset" required>
+            <br>
+            <label for="lat">Latitude</label>
+            <input type="text" id="lat" required>
+            
+            <label for="lon">Longitude</label>
+            <input type="text" id="lon" required>
+            
+            <h3>Result</h3>
+            <input type="text" id="result" readonly>
+
+            <button type="data" id="estimate" onclick="calc(); return false;">Estimate</button>
+            <br>
+            <br>
+            <button  type="reset" id="rst">Reset</button>
+        </form>
+    
     </div>
-  </footer>
+
+    </body>
+    <footer>
+        <div class="portfolioHomeButton">
+            <h3><a href="../../../portfolio.github.io/index.html">Portfolio Home</a></h3>
+        </div>
+    </footer>
 </html>
