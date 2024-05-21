@@ -1,0 +1,88 @@
+@charset "utf-8";
+
+html {
+    background-color: #304674;
+}
+
+body div.backLink {
+    margin: 1vw;
+}
+
+body div.backLink a {
+    text-decoration: none;
+    color: #d8e1e8;
+    font-size: 2vw;
+}
+
+body div.backLink a:hover {
+    color: white;
+}
+
+body input {
+    text-align: center;
+}
+
+#trackId {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+}
+
+#playbackPanel {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+    margin: auto;
+    width: 50%;
+}
+
+#playbackPanel button {
+    background-color: #98bad5;
+    border: none;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+}
+
+#playbackPanel button:hover {
+    background-color: #1b85b8;
+}
+
+#play, #pause {
+    border-radius: 12px;
+}
+
+#prev, #next {
+    border-radius: 20px;
+}
+
+#loop {
+    border-radius: 50%;
+}
+
+footer div.portfolioHomeButton a {
+    color: #d8e1e8;
+    font-size: 3vw;
+    text-decoration: none;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 2vw;
+}
+
+footer div.portfolioHomeButton a:hover {
+    color: white;
+}

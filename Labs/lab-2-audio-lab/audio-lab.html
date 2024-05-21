@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
+    <link href="styling.css" rel="stylesheet"/>
     <script defer type="text/javascript" src="audio-lab.js"></script>
     <title>Audio Lab</title>
 </head>
@@ -12,13 +13,16 @@
     </div>
     
     <audio id="currentTrack"></audio>
-
+    
+    
+    
     <div id="playbackPanel">
         <input type="text" id="trackId" readonly>
+        <button id="prev"><<</button>
         <button id="play">Play</button>
-        <button id="pause">Pause</button>
-        <button id="next">Next</button>
-        <button id="prev">previous</button>
+        <button id="pause">||</button>
+        <button id="next">>></button>
+        <br>
         <button id="loop">Loop</button>
     </div>
 
